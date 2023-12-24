@@ -2,9 +2,11 @@
 
 @main(title = "Home") {
   <link rel="stylesheet" href="/public/css/home.css" />
+  @Html("<script type='importmap'>{\"imports\": {\"three\": \"https://unpkg.com/three@0.160.0/build/three.module.js\",\"three/addons\": \"https://unpkg.com/three@0.160.0/examples/jsm/\"}}</script>")
 } {
-  <h1 class="heading">hi ☺/</h1>
-  <h1 class="heading">i'm jackson</h2>
-  <h1 class="heading">fullstack engineer @@ @companyName</h2>
-  <span class="dimmed">psst.. i write stuff on my <a href="/blog">blog</a></span>
+  <h1 class="heading mt">hi ☺/</h1>
+  <h1 class="heading">i'm jackson</h1>
+  <div id="animation"></div>
+  <h1 class="heading">fullstack engineer @@ @companyName</h1>
+  <span class="dimmed mt">psst.. i write stuff on my <a href="/blog">blog</a></span>
 }

@@ -1,8 +1,29 @@
-.heading {
+$ff: "Neue Bit";
+$linkColor: #42AAE4;
+
+.mt {
+  margin-top: 48px !important;
+}
+
+.splash-text {
   text-align: center;
-  font-family: "Neue Bit";
+  font-family: $ff;
+  font-weight: 700;
+}
+
+.heading {
+  @extend .splash-text;
+  font-size: 48px;
+  margin: 0;
 }
 
 .dimmed {
+  @extend .splash-text;
+  display: block;
   opacity: 0.6;
+  font-size: 20px;
+
+  a {
+    color: $linkColor;
+  }
 }
