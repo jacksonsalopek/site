@@ -70,3 +70,4 @@ project/**/metals.sbt
 
 # node
 /node_modules
+.DS_Store
