@@ -67,3 +67,6 @@ jitwatch.out
 project/**/metals.sbt
 
 .bsp
+
+# node
+/node_modules
