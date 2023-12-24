@@ -1,0 +1,11 @@
+@(recentPosts: Seq[String])
+
+@main(title = "Blog") {
+  <link rel="stylesheet" href="/public/css/blog.css" />
+} {
+  <ul>
+    @for(post <- recentPosts) {
+      <li><a href="/post/@post">@post</a></li>
+    }
+  </ul>
+}

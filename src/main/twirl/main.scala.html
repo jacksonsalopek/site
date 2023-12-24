@@ -1,15 +1,16 @@
-@(title: String)(content: Html)
+@(title: String)(head: Html)(content: Html)
 <!DOCTYPE html>
 <html>
   <head>
     <title>Jackson Salopek | @title</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="https://cdn.tailwindcss.com"></script>
-    <script defer src="/public/js/htmx-1.9.10.js"></script>
+    <link rel="stylesheet" href="/public/css/styles.css" />
+    @head
   </head>
   <body>
     <section class="content">@content</section>
+    <script defer src="/public/js/htmx-1.9.10.js"></script>
   </body>
 </html>
 

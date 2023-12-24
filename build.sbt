@@ -1,6 +1,14 @@
+import scala.sys.process._
+
 ThisBuild / organization := "com.jacksonsalopek"
 ThisBuild / scalaVersion := "3.3.1"
 ThisBuild / version := "0.1.0-SNAPSHOT"
+
+lazy val compileWebLangs = taskKey[Unit]("Compile SCSS -> CSS, TS -> JS")
+
+compileWebLangs := {
+  "scripts/compile_web_langs.sh" !
+}
 
 lazy val root = (project in file("."))
   .enablePlugins(SbtTwirl)

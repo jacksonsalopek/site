@@ -25,5 +25,7 @@ def readFileLines(path: String): Seq[String] = {
   lines
 }
 
-val listPosts = () => readFileLines("posts/manifest.txt")
+val listPostFiles = () => readFileLines("posts/manifest.txt")
+val listPosts = () =>
+  listPostFiles().map { fileName => fileName.substring(0, fileName.length - 3) }
 val renderPost = (contents: String) => Processor.process(contents)

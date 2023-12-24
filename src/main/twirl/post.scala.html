@@ -1,6 +1,8 @@
 @(postId: String, postHtml: String)
 
-@main(title = "Blog") {
+@main(title = "Blog Post - " + postId) {
+  <link rel="stylesheet" href="/public/css/post.css" />
+} {
   <h1 class="text-center">@postId</h1>
   <article>@Html(postHtml)</article>
 }

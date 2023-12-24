@@ -37,13 +37,22 @@ object Main extends MultithreadedHttpServerLauncher:
         "/",
         { request =>
           HttpResponse.ok200
-            .withHtml(html.index(listPosts()).toString)
+            .withHtml(html.index("spotify").toString)
             .toPromise
         }
       )
       .`with`(
         GET,
-        "/posts/:post_id",
+        "/blog",
+        { request =>
+          HttpResponse.ok200
+            .withHtml(html.blog(listPosts()).toString)
+            .toPromise
+        }
+      )
+      .`with`(
+        GET,
+        "/post/:post_id",
         { request =>
           val postId = request.getPathParameter("post_id")
           val postContent = readFileContent(s"posts/${postId}.md")
