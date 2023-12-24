@@ -1,0 +1,6 @@
+@(postId: String, postHtml: String)
+
+@main(title = "Blog") {
+  <h1 class="text-center">@postId</h1>
+  <article>@Html(postHtml)</article>
+}

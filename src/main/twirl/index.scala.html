@@ -1,0 +1,12 @@
+@(recentPosts: Seq[String])
+
+@main(title = "Home") {
+  <h1 class="text-center">hi ☺/</h1>
+  <h2 class="text-center">i'm jackson</h2>
+  <ul>
+    @for(post <- recentPosts) {
+      <li>@post</li>
+    }
+  </ul>
+}
+
