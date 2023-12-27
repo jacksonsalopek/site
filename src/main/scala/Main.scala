@@ -63,6 +63,24 @@ object Main extends MultithreadedHttpServerLauncher:
         }
       )
       .`with`(
+        GET,
+        "/client/menu",
+        { request =>
+          HttpResponse.ok200
+            .withHtml(html.menu_open("menu").toString)
+            .toPromise
+        }
+      )
+      .`with`(
+        GET,
+        "/client/menu/close",
+        { request =>
+          HttpResponse.ok200
+            .withHtml(html.menu_button("menu").toString)
+            .toPromise
+        }
+      )
+      .`with`(
         "/public/*",
         StaticServlet.builder(reactor, staticLoader).build
       )

@@ -5,6 +5,10 @@ $linkColor: #42AAE4;
   margin-top: 48px !important;
 }
 
+.mt-half {
+  margin-top: 24px !important;
+}
+
 .splash-text {
   text-align: center;
   font-family: $ff;
@@ -26,4 +30,24 @@ $linkColor: #42AAE4;
   a {
     color: $linkColor;
   }
+}
+
+#animation {
+	margin-top: 16px;
+	height: calc(50vh - 16px);
+	line-height: 0;
+  
+
+	& > div {
+		margin: 0 auto;
+		display: inline-block;
+	}
+}
+
+.animation-container {
+  text-align: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: -1;
 }

@@ -1,0 +1,14 @@
+@(id: String)
+
+<footer hx-target="this" hx-swap="outerHTML">
+  <div id="@id">
+    <div class="menu-content">
+      <div class="menu-title"><span class="green">$›</span> menu</div>
+      <a class="menu-link" href="/blog">‣blog/</a>
+      <a class="menu-link" href="/works">‣works/</a>
+      <a class="menu-link" href="/public/pdf/resume.pdf">‣resume/</a>
+    </div>
+    <a id="button-menu-close" hx-get="/client/menu/close">☓</a>
+  </div>
+</footer>
+

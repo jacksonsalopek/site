@@ -3,6 +3,8 @@
 @main(title = "Blog Post - " + postId) {
   <link rel="stylesheet" href="/public/css/post.css" />
 } {
+  @Html("")
+} {
   <h1 class="text-center">@postId</h1>
   <article>@Html(postHtml)</article>
 }

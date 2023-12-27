@@ -3,6 +3,8 @@
 @main(title = "Blog") {
   <link rel="stylesheet" href="/public/css/blog.css" />
 } {
+  @Html("")
+} {
   <ul>
     @for(post <- recentPosts) {
       <li><a href="/post/@post">@post</a></li>

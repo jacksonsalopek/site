@@ -1,4 +1,4 @@
-@(title: String)(head: Html)(content: Html)
+@(title: String)(styles: Html)(scripts: Html)(content: Html)
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/public/css/styles.css" />
     <link rel="stylesheet" href="/public/css/font.css" />
-    @head
+    @styles
   </head>
   <body>
-    <header><span class="logo">JSS</span><span class="logo-gradient">/</span></header>
-    <section class="content">@content</section>
-    <footer><a class="button-menu">= menu</a></footer>
+    <header><a href="/"><span class="logo">JSS</span><span class="logo-gradient">/</span></a></header>
+    <div class="content">@content</div>
+    @menu_button("menu")
     <script defer src="/public/js/htmx-1.9.10.js"></script>
+    @scripts
   </body>
 </html>
