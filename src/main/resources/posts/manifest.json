@@ -1,0 +1,16 @@
+{
+	"posts": [
+		{
+			"filename": "20240101",
+			"title": "The Architecture Behind jacksonsalopek.com",
+			"date": "2024-01-01",
+			"tags": ["architecture", "scala", "web"]
+		},
+		{
+			"filename": "test",
+			"title": "Test",
+			"date": "2023-12-31",
+			"tags": ["test"]
+		}
+	]
+}

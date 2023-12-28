@@ -19,7 +19,8 @@ lazy val root = (project in file("."))
       "io.activej" % "activej-launchers-http" % "6.0-beta2",
       "com.github.rjeschke" % "txtmark" % "0.13",
       "ch.qos.logback" % "logback-classic" % "1.4.14",
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
+      "com.lihaoyi" %% "ujson" % "3.1.3"
     ),
     Compile / mainClass := Some("com.jacksonsalopek.site.Main"),
     nativeImageJvm := "graalvm-java21",

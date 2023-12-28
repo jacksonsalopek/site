@@ -154,6 +154,9 @@ export function onLoad(geometry: BufferGeometry) {
 	);
 	animationState.controls.enableZoom = true;
 
+	const animationContainer = document.getElementById("animation");
+	animationContainer?.removeChild(animationContainer?.children[0]);
+
 	tick();
 }
 

@@ -120,6 +120,8 @@ export function onLoad(geometry) {
   animationState.scene.add(animationState.mesh);
   animationState.controls = new OrbitControls(animationState.camera, animationState.domElement);
   animationState.controls.enableZoom = true;
+  const animationContainer = document.getElementById("animation");
+  animationContainer?.removeChild(animationContainer?.children[0]);
   tick();
 }
 export function onResize() {

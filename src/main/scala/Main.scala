@@ -46,7 +46,7 @@ object Main extends MultithreadedHttpServerLauncher:
         "/blog",
         { request =>
           HttpResponse.ok200
-            .withHtml(html.blog(listPosts()).toString)
+            .withHtml(html.blog(readManifest()).toString)
             .toPromise
         }
       )

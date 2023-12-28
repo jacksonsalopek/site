@@ -1,13 +1,22 @@
-@(recentPosts: Seq[String])
+@import com.jacksonsalopek.site.Blog
+
+@(blog: Blog)
 
 @main(title = "Blog") {
   <link rel="stylesheet" href="/public/css/blog.css" />
 } {
   @Html("")
 } {
-  <ul>
-    @for(post <- recentPosts) {
-      <li><a href="/post/@post">@post</a></li>
-    }
-  </ul>
+  <h1 class="heading">skaj's scatterbrain</h1>
+  <div class="posts">
+  @for(post <- blog.posts) {
+    <div class="post">
+      <a href="/post/@post.filename"><h2 class="title">@post.title</h2></a>
+      <h3 class="date">@post.date</h3>
+      @for(tag <- post.tags) {
+        <span class="tag">@tag</span>
+      }
+    </div>
+  }
+  </div>
 }

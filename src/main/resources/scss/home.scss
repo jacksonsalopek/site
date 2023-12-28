@@ -37,6 +37,11 @@ $linkColor: #42AAE4;
 	height: calc(50vh - 16px);
 	line-height: 0;
   
+  code {
+    display: block;
+    position: relative;
+    top: 72px;
+  }
 
 	& > div {
 		margin: 0 auto;

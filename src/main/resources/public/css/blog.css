@@ -1,1 +1,1 @@
-.heading{text-align:center}
+.heading{font-family:"Neue Bit";text-align:center}.posts .post{font-family:"Neue Bit";max-width:320px;margin:0 auto;padding:8px;border:1px solid rgba(255,255,255,.25);border-radius:4px}.posts .post:not(:nth-of-type(1)){margin-top:12px}.posts .post a:has(>.title){text-decoration:none}.posts .post .title{color:#fff;font-size:32px;font-weight:700;margin:4px 0 6px}.posts .post .date{margin:0 0 6px;font-size:22px;font-weight:700;color:rgba(255,255,255,.5)}.posts .post .tag{background:#146a70;padding:2px 4px;border-radius:4px;font-size:18px}
