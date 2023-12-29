@@ -1,15 +1,12 @@
 package com.jacksonsalopek.site
 
-import com.github.rjeschke.txtmark.Processor
-import scala.collection.JavaConverters._
 import scala.io.Source
-import spray.json._
-
-import BlogJsonProtocol._
+import com.github.rjeschke.txtmark.Processor
+import com.github.plokhotnyuk.jsoniter_scala.core._
 
 def readFileContent(path: String): String = {
-  val stream =
-    Thread.currentThread.getContextClassLoader.getResourceAsStream(path)
+  val stream = this.getClass.getClassLoader
+    .getResourceAsStream(path)
   val content = Source.fromInputStream(stream).mkString
   stream.close
   content
@@ -17,7 +14,7 @@ def readFileContent(path: String): String = {
 
 def readManifest(): Blog = {
   val manifestFileStr = readFileContent("posts/manifest.json")
-  manifestFileStr.parseJson.convertTo[Blog]
+  readFromString[Blog](manifestFileStr)
 }
 
 val renderPost = (contents: String) => Processor.process(contents)

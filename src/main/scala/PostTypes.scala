@@ -1,7 +1,7 @@
 package com.jacksonsalopek.site
 
-import spray.json._
-import DefaultJsonProtocol._
+import com.github.plokhotnyuk.jsoniter_scala.macros._
+import com.github.plokhotnyuk.jsoniter_scala.core._
 
 case class Post(
     filename: String,
@@ -11,9 +11,4 @@ case class Post(
 )
 
 case class Blog(posts: List[Post])
-object Blog
-
-object BlogJsonProtocol extends DefaultJsonProtocol {
-  implicit val postFormat: RootJsonFormat[Post] = jsonFormat4(Post.apply)
-  implicit val blogFormat: RootJsonFormat[Blog] = jsonFormat1(Blog.apply)
-}
+given blogCodec: JsonValueCodec[Blog] = JsonCodecMaker.make

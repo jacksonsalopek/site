@@ -16,7 +16,6 @@ EXPOSE 8080
 RUN bash -c "source /root/.sdkman/bin/sdkman-init.sh && \
   sdk env install && sbt clean compile nativeImage"
 
-
 FROM debian:stable-slim
 
 COPY --from=build /app/target/native-image/site /app/site
