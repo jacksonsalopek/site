@@ -12,19 +12,18 @@ ENV JAVA_HOME="/root/.sdkman/candidates/java/current"
 
 EXPOSE 8080
 
-# Load SDKMAN into the current shell
-RUN bash -c "source /root/.sdkman/bin/sdkman-init.sh && \
-  sdk env install && sbt clean compile"
-
 # readd nativeImage to sbt command once working
+RUN bash -c "source /root/.sdkman/bin/sdkman-init.sh && \
+  sdk env install && sbt clean compile nativeImage"
 
-# FROM debian:stable-slim
 
-# COPY --from=build /app/target/native-image/site /app/site
+FROM debian:stable-slim
 
-# WORKDIR /app
+COPY --from=build /app/target/native-image/site /app/site
 
-# EXPOSE 8080
+WORKDIR /app
 
-# Change me to built binary once working
-CMD ["sbt", "run"]
+ENV PATH="/app:${PATH}"
+EXPOSE 8080
+
+CMD ["site"]
