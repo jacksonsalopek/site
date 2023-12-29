@@ -23,6 +23,39 @@ object Main extends MultithreadedHttpServerLauncher:
   def staticLoader(reactor: Reactor, executor: Executor): IStaticLoader =
     IStaticLoader.ofClassPath(reactor, executor, RESOURCE_DIR)
 
+  def index(): AsyncServlet = { request =>
+    HttpResponse.ok200
+      .withHtml(html.index("spotify").toString)
+      .toPromise
+  }
+
+  def blog(): AsyncServlet = { request =>
+    HttpResponse.ok200
+      .withHtml(html.blog(readManifest()).toString)
+      .toPromise
+  }
+
+  def post(): AsyncServlet = { request =>
+    val postId = request.getPathParameter("post_id")
+    val postContent = readFileContent(s"posts/${postId}.md")
+    val postHTML = renderPost(postContent)
+    HttpResponse.ok200
+      .withHtml(html.post(postId, postHTML).toString)
+      .toPromise
+  }
+
+  def menuOpen(): AsyncServlet = { request =>
+    HttpResponse.ok200
+      .withHtml(html.menu_open("menu").toString)
+      .toPromise
+  }
+
+  def menuClose(): AsyncServlet = { request =>
+    HttpResponse.ok200
+      .withHtml(html.menu_button("menu").toString)
+      .toPromise
+  }
+
   @Provides
   @Worker
   def servlet(
@@ -32,54 +65,11 @@ object Main extends MultithreadedHttpServerLauncher:
   ): AsyncServlet =
     RoutingServlet
       .builder(reactor)
-      .`with`(
-        GET,
-        "/",
-        { request =>
-          HttpResponse.ok200
-            .withHtml(html.index("spotify").toString)
-            .toPromise
-        }
-      )
-      .`with`(
-        GET,
-        "/blog",
-        { request =>
-          HttpResponse.ok200
-            .withHtml(html.blog(readManifest()).toString)
-            .toPromise
-        }
-      )
-      .`with`(
-        GET,
-        "/post/:post_id",
-        { request =>
-          val postId = request.getPathParameter("post_id")
-          val postContent = readFileContent(s"posts/${postId}.md")
-          val postHTML = renderPost(postContent)
-          HttpResponse.ok200
-            .withHtml(html.post(postId, postHTML).toString)
-            .toPromise
-        }
-      )
-      .`with`(
-        GET,
-        "/client/menu",
-        { request =>
-          HttpResponse.ok200
-            .withHtml(html.menu_open("menu").toString)
-            .toPromise
-        }
-      )
-      .`with`(
-        GET,
-        "/client/menu/close",
-        { request =>
-          HttpResponse.ok200
-            .withHtml(html.menu_button("menu").toString)
-            .toPromise
-        }
-      )
+      .`with`(GET, "/", index())
+      .`with`(GET, "/blog", blog())
+      .`with`(GET, "/post/:post_id", post())
+      .`with`(GET, "/client/menu", menuOpen())
+      .`with`(GET, "/client/menu/close", menuClose())
       .`with`(
         "/public/*",
         StaticServlet.builder(reactor, staticLoader).build

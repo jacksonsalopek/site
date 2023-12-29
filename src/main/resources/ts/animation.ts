@@ -20,7 +20,11 @@ export const animationState: any & {
 	domElement: unknown | undefined;
 	effect: AsciiEffect | undefined;
 } = {
-	camera: new PerspectiveCamera(45, window.innerWidth / window.innerHeight),
+	camera: new PerspectiveCamera(
+		45,
+		document.getElementById("animation")?.clientWidth /
+			document.getElementById("animation")?.clientHeight,
+	),
 	clock: new Clock(),
 	controls: undefined,
 	domElement: undefined,
@@ -57,10 +61,12 @@ export function createEffect(): AsciiEffect {
 			resolution: animationState.config.resolution,
 		},
 	);
-	const width =
-		window.innerWidth - (window.innerWidth * 80) / window.innerHeight;
-	const height = window.innerHeight - 80;
-	effect.setSize(width * 0.5, height * 0.5);
+
+	const animationContainer = document.getElementById("animation");
+	if (!animationContainer) throw new Error("Animation Container not defined!");
+
+	const { clientWidth: width, clientHeight: height } = animationContainer;
+	effect.setSize(width, height);
 	effect.domElement.style.color = animationState.config.color;
 	effect.domElement.style.backgroundColor =
 		animationState.config.backgroundColor;
@@ -163,16 +169,18 @@ export function onLoad(geometry: BufferGeometry) {
 export function onResize() {
 	if (!animationState.renderer)
 		throw new Error("WebGLRenderer not instantiated!");
-	animationState.camera.aspect = window.innerWidth / window.innerHeight;
+
+	const animationContainer = document.getElementById("animation");
+	if (!animationContainer) throw new Error("Animation Container not defined!");
+
+	const { clientWidth: width, clientHeight: height } = animationContainer;
+	animationState.camera.aspect = width / height;
 	if (!adjustCameraZoom()) {
 		animationState.camera.updateProjectionMatrix();
 	}
-	const width =
-		window.innerWidth - (window.innerWidth * 80) / window.innerHeight;
-	const height = window.innerHeight - 80;
 
-	animationState.renderer.setSize(width * 0.5, height * 0.5);
-	animationState.effect?.setSize(width * 0.5, height * 0.5);
+	animationState.renderer.setSize(width, height);
+	animationState.effect?.setSize(width, height);
 }
 
 export function bootstrap() {

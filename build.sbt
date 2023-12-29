@@ -20,7 +20,7 @@ lazy val root = (project in file("."))
       "com.github.rjeschke" % "txtmark" % "0.13",
       "ch.qos.logback" % "logback-classic" % "1.4.14",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
-      "com.lihaoyi" %% "ujson" % "3.1.3"
+      "io.spray" %% "spray-json" % "1.3.6"
     ),
     Compile / mainClass := Some("com.jacksonsalopek.site.Main"),
     nativeImageJvm := "graalvm-java21",

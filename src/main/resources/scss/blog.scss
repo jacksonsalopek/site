@@ -5,6 +5,13 @@ $ff: 'Neue Bit';
   text-align: center;
 }
 
+.dimmed {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: $ff;
+  font-size: 18px;
+  text-align: center;
+}
+
 .posts {
   .post {
     font-family: $ff;

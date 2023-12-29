@@ -51,8 +51,10 @@ $linkColor: #42AAE4;
 
 .animation-container {
   text-align: center;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: -1;
+}
+
+@media (min-width: 700px) {
+  .animation-container {
+    padding: 16px;
+  }
 }
