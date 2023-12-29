@@ -15,6 +15,7 @@ lazy val root = (project in file("."))
   .enablePlugins(NativeImagePlugin)
   .settings(
     name := "site",
+    scalaVersion := "3.3.1",
     libraryDependencies ++= Seq(
       "io.activej" % "activej-launchers-http" % "6.0-beta2",
       "com.github.rjeschke" % "txtmark" % "0.13",
@@ -24,5 +25,10 @@ lazy val root = (project in file("."))
     ),
     Compile / mainClass := Some("com.jacksonsalopek.site.Main"),
     nativeImageJvm := "graalvm-java21",
-    nativeImageVersion := "21.0.1"
+    nativeImageVersion := "21.0.1",
+    nativeImageOptions ++= Seq(
+      "--no-fallback",
+      "--allow-incomplete-classpath",
+      "-H:ReflectionConfigurationFiles=" + baseDirectory.value.getAbsolutePath + "/config/reflectionconfig.json"
+    )
   )

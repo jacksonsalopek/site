@@ -1,26 +1,30 @@
-
-# First stage: build the native image using the SBT & Scala base image
-FROM sbtscala/scala-sbt:graalvm-community-21.0.1_1.9.7_3.3.1 as build
+FROM debian:stable-slim as build
 
 WORKDIR /app
 
-# Copy your source files into the image
+RUN apt-get update && apt-get install -y curl git zip build-essential zlib1g-dev
+RUN curl -s "https://get.sdkman.io" | bash
+
 COPY . /app
 
-# Run the build commands
-RUN sbt clean compile nativeImage
+ENV PATH="/root/.sdkman/candidates/java/current/bin:/root/.sdkman/candidates/scala/current/bin:/root/.sdkman/candidates/sbt/current/bin:${PATH}"
+ENV JAVA_HOME="/root/.sdkman/candidates/java/current"
 
-# Second stage: start from a clean Alpine base image
-FROM alpine:latest
-
-# Copy the native executable from the build stage
-COPY --from=build /app/target/native-image/site /app/site
-
-# Set the working directory
-WORKDIR /app
-
-# Expose the port on which your app runs
 EXPOSE 8080
 
-# Set the command to run your app
-CMD ["./site"]
+# Load SDKMAN into the current shell
+RUN bash -c "source /root/.sdkman/bin/sdkman-init.sh && \
+  sdk env install && sbt clean compile"
+
+# readd nativeImage to sbt command once working
+
+# FROM debian:stable-slim
+
+# COPY --from=build /app/target/native-image/site /app/site
+
+# WORKDIR /app
+
+# EXPOSE 8080
+
+# Change me to built binary once working
+CMD ["sbt", "run"]

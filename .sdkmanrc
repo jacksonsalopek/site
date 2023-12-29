@@ -2,3 +2,4 @@
 # Add key=value pairs of SDKs to use below
 java=21.0.1-graal
 scala=3.3.1
+sbt=1.9.7

@@ -1,0 +1,20 @@
+[
+	{
+		"name": "com.jacksonsalopek.site.Main$",
+		"allPublicMethods": true,
+		"allPublicConstructors": true,
+		"allPublicFields": true,
+		"allDeclaredMethods": true,
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true
+	},
+	{
+		"name": "io.activej.launchers.http.HttpServerLauncher",
+		"allDeclaredMethods": true,
+		"allDeclaredFields": true
+	},
+	{
+		"name": "io.activej.service.ServiceGraphModule",
+		"allDeclaredMethods": true
+	}
+]
