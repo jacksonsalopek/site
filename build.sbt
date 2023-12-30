@@ -31,7 +31,6 @@ lazy val root = (project in file("."))
       "--no-fallback",
       "--allow-incomplete-classpath",
       "--initialize-at-build-time=ch.qos.logback",
-      "--initialize-at-run-time=com.jacksonsalopek.site.BlogJsonProtocol$",
       "-H:ReflectionConfigurationFiles=" + baseDirectory.value.getAbsolutePath + "/config/reflectionconfig.json",
       "-H:ResourceConfigurationFiles=" + baseDirectory.value.getAbsolutePath + "/config/resourceconfig.json"
     )
