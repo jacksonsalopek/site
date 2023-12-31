@@ -12,7 +12,7 @@
   <div class="works">
   @for(work <- works.works) {
     <div class="work">
-      <a href="@work.url"><h2 class="title">@work.title</h2></a>
+      <a href="@work.url" target="_blank"><h2 class="title">@work.title</h2></a>
       <p>@work.desc</p>
       <span class="section-title">langs:</span>
       @for(lang <- work.langs) {
