@@ -1,0 +1,39 @@
+{
+	"works": [
+		{
+			"title": "aponia",
+			"desc": "Filesystem-routed API framework built on Bun + Elysia",
+			"langs": ["ts"],
+			"deps": ["bun", "elysia"],
+			"url": "https://github.com/jacksonsalopek/aponia"
+		},
+		{
+			"title": "skintracker",
+			"desc": "Utilities for tracking CSGO skin prices across different markets",
+			"langs": ["ts", "tsx"],
+			"deps": ["bun", "aponia", "htmx", "tailwindcss"],
+			"url": "https://github.com/skintracker/skintracker"
+		},
+		{
+			"title": "temporal",
+			"desc": "Cross-platform time-based budgeting desktop app",
+			"langs": ["ts", "js"],
+			"deps": ["electron", "solidjs", "vite", "daisy-ui"],
+			"url": "https://github.com/jacksonsalopek/temporal"
+		},
+		{
+			"title": "ssd",
+			"desc": "Lightweight state management in SolidJS",
+			"langs": ["ts"],
+			"deps": ["solidjs"],
+			"url": "https://github.com/jacksonsalopek/temporal/tree/master/packages/shared/ssd"
+		},
+		{
+			"title": "raycast/tradingview",
+			"desc": "TradingView controls for Raycast",
+			"langs": ["ts"],
+			"deps": ["raycast"],
+			"url": "https://github.com/jacksonsalopek/raycast-extension-tradingview"
+		}
+	]
+}

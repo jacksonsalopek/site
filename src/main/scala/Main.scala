@@ -21,7 +21,7 @@ object Main extends HttpServerLauncher:
   final val RESOURCE_DIR = "public"
 
   @Provides
-  def executor(): Executor = {
+  def executor: Executor = {
     newSingleThreadExecutor()
   }
 
@@ -29,25 +29,25 @@ object Main extends HttpServerLauncher:
   def staticLoader(reactor: Reactor, executor: Executor): IStaticLoader =
     IStaticLoader.ofClassPath(reactor, executor, RESOURCE_DIR)
 
-  def index(): AsyncServlet = { request =>
+  def index: AsyncServlet = { request =>
     HttpResponse.ok200
       .withHtml(html.index("spotify").toString)
       .toPromise
   }
 
-  def works(): AsyncServlet = { request =>
+  def works: AsyncServlet = { request =>
     HttpResponse.ok200
-      .withHtml(html.works(WORKS).toString)
+      .withHtml(html.works(readWorksManifest).toString)
       .toPromise
   }
 
-  def blog(): AsyncServlet = { request =>
+  def blog: AsyncServlet = { request =>
     HttpResponse.ok200
-      .withHtml(html.blog(readManifest()).toString)
+      .withHtml(html.blog(readBlogManifest).toString)
       .toPromise
   }
 
-  def post(): AsyncServlet = { request =>
+  def post: AsyncServlet = { request =>
     val postId = request.getPathParameter("post_id")
     val postContent = readFileContent(s"posts/${postId}.md")
     val postHTML = renderPost(postContent)
@@ -56,13 +56,13 @@ object Main extends HttpServerLauncher:
       .toPromise
   }
 
-  def menuOpen(): AsyncServlet = { request =>
+  def menuOpen: AsyncServlet = { request =>
     HttpResponse.ok200
       .withHtml(html.menu_open("menu").toString)
       .toPromise
   }
 
-  def menuClose(): AsyncServlet = { request =>
+  def menuClose: AsyncServlet = { request =>
     HttpResponse.ok200
       .withHtml(html.menu_button("menu").toString)
       .toPromise
@@ -75,12 +75,12 @@ object Main extends HttpServerLauncher:
   ): AsyncServlet =
     RoutingServlet
       .builder(reactor)
-      .`with`(GET, "/", index())
-      .`with`(GET, "/works", works())
-      .`with`(GET, "/blog", blog())
-      .`with`(GET, "/post/:post_id", post())
-      .`with`(GET, "/client/menu", menuOpen())
-      .`with`(GET, "/client/menu/close", menuClose())
+      .`with`(GET, "/", index)
+      .`with`(GET, "/works", works)
+      .`with`(GET, "/blog", blog)
+      .`with`(GET, "/post/:post_id", post)
+      .`with`(GET, "/client/menu", menuOpen)
+      .`with`(GET, "/client/menu/close", menuClose)
       .`with`(
         "/public/*",
         StaticServlet.builder(reactor, staticLoader).build
