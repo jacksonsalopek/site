@@ -1,0 +1,61 @@
+$ff: 'Neue Bit';
+
+.heading {
+  font-family: $ff;
+  text-align: center;
+}
+
+.dimmed {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: $ff;
+  font-size: 18px;
+  text-align: center;
+}
+
+.works {
+  .work {
+    font-family: $ff;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+
+    &:not(:nth-of-type(1)) {
+      margin-top: 12px;
+    }
+
+    a:has(> .title) {
+      text-decoration: none;
+    }
+
+    .title {
+      color: #fff;
+      font-size: 32px;
+      font-weight: 700;
+      margin: 4px 0 6px;
+    }
+
+    .section-title {
+      font-size: 18px;
+    }
+
+    .spacer {
+      height: 8px;
+    }
+
+    .lang {
+      background: #146A70;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 18px;
+    }
+
+    .dep {
+      background: #9370DB;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 18px;
+    }
+  }
+}

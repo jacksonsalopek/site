@@ -1,0 +1,28 @@
+
+@import com.jacksonsalopek.site.Works
+
+@(works: Works)
+
+@main(title = "Works") {
+  <link rel="stylesheet" href="/public/css/works.css" />
+} {
+  @Html("")
+} {
+  <h1 class="heading">works</h1>  
+  <div class="works">
+  @for(work <- works.works) {
+    <div class="work">
+      <a href="@work.url"><h2 class="title">@work.title</h2></a>
+      <span class="section.title">langs:</span>
+      @for(lang <- work.langs) {
+        <span class="lang">@lang</span>
+      }
+      <div class="spacer"></div>
+      <span class="section-title">deps:</span>
+      @for(dep <- work.deps) {
+        <span class="dep">@dep</span>
+      }
+    </div>
+  }
+  </div>
+}

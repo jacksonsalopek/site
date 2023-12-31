@@ -35,6 +35,12 @@ object Main extends HttpServerLauncher:
       .toPromise
   }
 
+  def works(): AsyncServlet = { request =>
+    HttpResponse.ok200
+      .withHtml(html.works(WORKS).toString)
+      .toPromise
+  }
+
   def blog(): AsyncServlet = { request =>
     HttpResponse.ok200
       .withHtml(html.blog(readManifest()).toString)
@@ -70,6 +76,7 @@ object Main extends HttpServerLauncher:
     RoutingServlet
       .builder(reactor)
       .`with`(GET, "/", index())
+      .`with`(GET, "/works", works())
       .`with`(GET, "/blog", blog())
       .`with`(GET, "/post/:post_id", post())
       .`with`(GET, "/client/menu", menuOpen())
