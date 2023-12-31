@@ -31,13 +31,13 @@ object Main extends MultithreadedHttpServerLauncher:
 
   def works: AsyncServlet = { request =>
     HttpResponse.ok200
-      .withHtml(html.works(readWorksManifest).toString)
+      .withHtml(html.works(getWorks).toString)
       .toPromise
   }
 
   def blog: AsyncServlet = { request =>
     HttpResponse.ok200
-      .withHtml(html.blog(readBlogManifest).toString)
+      .withHtml(html.blog(getBlog).toString)
       .toPromise
   }
 

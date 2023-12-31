@@ -9,3 +9,7 @@ def readFileContent(path: String): String = {
   stream.close
   content
 }
+
+trait HasManifest[A]:
+  def manifestPath: String
+  def getManifest: String = readFileContent(this.manifestPath)
