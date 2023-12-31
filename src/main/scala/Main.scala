@@ -10,20 +10,14 @@ import io.activej.http.HttpMethod.GET
 import io.activej.http.loader.IStaticLoader
 import io.activej.inject.annotation.Provides
 import io.activej.launcher.Launcher
-import io.activej.launchers.http.HttpServerLauncher
+import io.activej.launchers.http.MultithreadedHttpServerLauncher
 import io.activej.worker.annotation.{Worker, WorkerId}
 import io.activej.reactor.Reactor
 
 import java.util.concurrent.Executor
-import java.util.concurrent.Executors.newSingleThreadExecutor
 
-object Main extends HttpServerLauncher:
+object Main extends MultithreadedHttpServerLauncher:
   final val RESOURCE_DIR = "public"
-
-  @Provides
-  def executor: Executor = {
-    newSingleThreadExecutor()
-  }
 
   @Provides
   def staticLoader(reactor: Reactor, executor: Executor): IStaticLoader =
@@ -69,7 +63,9 @@ object Main extends HttpServerLauncher:
   }
 
   @Provides
+  @Worker
   def servlet(
+      @WorkerId workerId: Int,
       reactor: Reactor,
       staticLoader: IStaticLoader
   ): AsyncServlet =
