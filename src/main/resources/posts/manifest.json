@@ -1,6 +1,12 @@
 {
 	"posts": [
 		{
+			"filename": "20240212",
+			"title": "Moving to Greener Pastures: Debian to NixOS",
+			"date": "2024-02-12",
+			"tags": ["linux", "os", "config"]
+		},
+		{
 			"filename": "20240101",
 			"title": "The Architecture Behind jacksonsalopek.com",
 			"date": "2024-01-01",

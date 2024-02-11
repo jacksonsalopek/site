@@ -20,7 +20,7 @@ lazy val root = (project in file("."))
       "io.activej" % "activej-launchers-http" % "6.0-beta2",
       "ch.qos.logback" % "logback-classic" % "1.3.4",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
-      "com.github.rjeschke" % "txtmark" % "0.13",
+      "org.commonmark" % "commonmark" % "0.21.0",
       "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-core" % "2.26.2",
       "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros" % "2.26.2" % "compile-internal"
     ),

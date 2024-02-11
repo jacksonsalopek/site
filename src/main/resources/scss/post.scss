@@ -17,11 +17,19 @@ article {
     color: #42AAE4;
   }
 
-  i, em {
+  i,
+  em {
     color: #08BDBA;
   }
 
-  b, strong {
+  b,
+  strong {
     color: #FF7EB6;
+  }
+
+  code {
+    background: #555;
+    padding: 0px 4px;
+    border-radius: 2px;
   }
 }

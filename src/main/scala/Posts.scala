@@ -1,7 +1,9 @@
 package com.jacksonsalopek.site
 
 import scala.io.Source
-import com.github.rjeschke.txtmark.Processor
+import org.commonmark.node._
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 import com.github.plokhotnyuk.jsoniter_scala.core._
 
 def readFileContent(path: String): String = {
@@ -17,4 +19,8 @@ def readManifest(): Blog = {
   readFromString[Blog](manifestFileStr)
 }
 
-val renderPost = (contents: String) => Processor.process(contents)
+def renderPost(contents: String): String = {
+  val renderer = HtmlRenderer.builder.build
+  val doc = Parser.builder.build.parse(contents)
+  renderer.render(doc)
+}
