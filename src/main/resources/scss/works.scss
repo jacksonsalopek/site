@@ -5,13 +5,6 @@ $ff: 'Neue Bit';
   text-align: center;
 }
 
-.dimmed {
-  color: rgba(255, 255, 255, 0.5);
-  font-family: $ff;
-  font-size: 18px;
-  text-align: center;
-}
-
 .works {
   .work {
     font-family: $ff;
@@ -53,6 +46,7 @@ $ff: 'Neue Bit';
 
     .dep {
       background: #9370DB;
+      color: #161616;
       padding: 2px 4px;
       border-radius: 4px;
       font-size: 18px;
