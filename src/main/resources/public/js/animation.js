@@ -1,18 +1,17 @@
 import {
-BufferGeometry,
-Clock,
-Color,
-DoubleSide,
-Mesh,
-MeshLambertMaterial,
-PerspectiveCamera,
-PointLight,
-Scene,
-WebGLRenderer
+  Clock,
+  Color,
+  DoubleSide,
+  Mesh,
+  MeshLambertMaterial,
+  PerspectiveCamera,
+  PointLight,
+  Scene,
+  WebGLRenderer
 } from "three";
-import {OrbitControls} from "three/addons/controls/OrbitControls.js";
-import {AsciiEffect} from "three/addons/effects/AsciiEffect.js";
-import {STLLoader} from "three/addons/loaders/STLLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { AsciiEffect } from "three/addons/effects/AsciiEffect.js";
+import { STLLoader } from "three/addons/loaders/STLLoader.js";
 export const animationState = {
   camera: new PerspectiveCamera(45, document.getElementById("animation")?.clientWidth / document.getElementById("animation")?.clientHeight),
   clock: new Clock,

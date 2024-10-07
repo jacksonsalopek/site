@@ -32,6 +32,7 @@ lazy val root = (project in file("."))
       "--allow-incomplete-classpath",
       "--initialize-at-build-time=ch.qos.logback",
       "-H:ReflectionConfigurationFiles=" + baseDirectory.value.getAbsolutePath + "/config/reflectionconfig.json",
-      "-H:ResourceConfigurationFiles=" + baseDirectory.value.getAbsolutePath + "/config/resourceconfig.json"
+      "-H:ResourceConfigurationFiles=" + baseDirectory.value.getAbsolutePath + "/config/resourceconfig.json",
+      "-H:+UnlockExperimentalVMOptions"
     )
   )
