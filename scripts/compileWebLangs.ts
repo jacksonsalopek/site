@@ -1,25 +1,12 @@
 import { execSync } from "child_process";
-import { readFileSync, readdirSync, writeFileSync } from "fs";
+import { readdirSync } from "fs";
 import { join } from "path";
 
-function transpileTS() {
-	const transpiler = new Bun.Transpiler({
-		loader: "ts",
-		target: "browser",
-	});
-
-	const path = "src/main/resources/ts";
-	const tsDirFiles = readdirSync(path);
-
-	for (const file of tsDirFiles) {
-		const filePath = join(path, file);
-		const fileContent = readFileSync(filePath, "utf8");
-		const transpiledContents = transpiler.transformSync(fileContent);
-		writeFileSync(
-			`src/main/resources/public/js/${file.split(".")[0]}.js`,
-			transpiledContents,
-		);
-	}
+async function transpileTS() {
+	await Bun.build({
+		entrypoints: ["src/main/resources/ts/animation.ts"],
+		outdir: "src/main/resources/public/js",
+	})
 }
 
 function compileSCSS() {

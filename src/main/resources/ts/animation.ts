@@ -1,205 +1,161 @@
 import {
-	BufferGeometry,
-	Clock,
-	Color,
-	DoubleSide,
-	Mesh,
-	MeshLambertMaterial,
-	PerspectiveCamera,
-	PointLight,
-	Scene,
 	WebGLRenderer,
+	Scene,
+	PerspectiveCamera,
+	Color,
+	DirectionalLight,
+	Clock,
+	Object3D
 } from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { AsciiEffect } from "three/addons/effects/AsciiEffect.js";
-import { STLLoader } from "three/addons/loaders/STLLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { ASCII } from "./ascii";
+import { EffectComposer, EffectPass, RenderPass } from "postprocessing";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-export const animationState: any & {
-	camera: PerspectiveCamera;
-	controls: OrbitControls | undefined;
-	domElement: unknown | undefined;
-	effect: AsciiEffect | undefined;
-} = {
-	camera: new PerspectiveCamera(
-		45,
-		document.getElementById("animation")?.clientWidth /
-			document.getElementById("animation")?.clientHeight,
-	),
-	clock: new Clock(),
-	controls: undefined,
-	domElement: undefined,
-	effect: undefined,
-	lights: [new PointLight(0xffffff, 1), new PointLight(0xffffff, 0.5)],
-	material: new MeshLambertMaterial({
-		flatShading: true,
-		side: DoubleSide,
-	}),
-	mesh: new Mesh(),
-	renderer: new WebGLRenderer(),
-	rotate: true,
-	scene: new Scene(),
-	stlLoader: new STLLoader(),
-	config: {
-		color: "#fff",
-		backgroundColor: "#000",
-		charSet: " .:-+*=%@#",
-		resolution: 0.205,
-		modelUrl: "/public/stl/porsche.stl",
-		oscillate: false,
-		amplitude: 1 / 3,
-	},
-};
+export class App {
+	private container: HTMLElement;
+	private canvas: { width: number; height: number };
+	private isMobile: boolean;
+	private config: { color: string; backgroundColor: string; charSet: string; modelUrl: string };
+	private renderer?: WebGLRenderer;
+	private scene?: Scene;
+	private camera: PerspectiveCamera;
+	private light?: DirectionalLight;
+	private gltfLoader?: GLTFLoader;
+	private composer?: EffectComposer;
+	private controls?: OrbitControls;
+	private clock: Clock;
+	private mesh?: Object3D;
 
-export function createEffect(): AsciiEffect {
-	if (!animationState.renderer)
-		throw new Error("WebGLRenderer not instantiated!");
-	const effect = new AsciiEffect(
-		animationState.renderer,
-		animationState.config.charSet,
-		{
-			invert: true,
-			resolution: animationState.config.resolution,
-		},
-	);
+	constructor() {
+		this.container = document.getElementById("animation") as HTMLElement;
+		this.canvas = {
+			width: this.container.clientWidth,
+			height: this.container.clientHeight
+		};
 
-	const animationContainer = document.getElementById("animation");
-	if (!animationContainer) throw new Error("Animation Container not defined!");
+		this.camera = new PerspectiveCamera(
+			80,
+			this.canvas.width / this.canvas.height,
+			0.1,
+			1000
+		);
+		this.camera.position.x = 2
+		this.camera.position.y = 2.36
+		this.camera.position.z = -2.68
 
-	const { clientWidth: width, clientHeight: height } = animationContainer;
-	effect.setSize(width, height);
-	effect.domElement.style.color = animationState.config.color;
-	effect.domElement.style.backgroundColor =
-		animationState.config.backgroundColor;
-	return effect;
-}
+		this.clock = new Clock();
+		this.isMobile = matchMedia("(pointer: coarse)").matches;
+		this.config = {
+			color: "#fff",
+			backgroundColor: "#000",
+			charSet: " .:-+*=%@#",
+			modelUrl: "/public/glb/lambo.glb"
+		};
 
-export function render(effect: AsciiEffect) {
-	effect.render(animationState.scene, animationState.camera);
-	window.requestAnimationFrame(tick);
-}
+		this.initThree();
+		this.loadModel();
+		this.initAsciiEffect();
+		if (this.renderer) this.container.appendChild(this.renderer.domElement);
+	}
 
-export function toggleRotation() {
-	animationState.rotate = !animationState.rotate;
-}
+	initThree() {
+		const pixelRatio = window.devicePixelRatio || 1;
+		let antialias = true;
+		if (this.isMobile) antialias = false;
+		if (pixelRatio > 2) antialias = false;
 
-export function tick() {
-	if (animationState.effect) {
-		if (animationState.rotate) {
-			animationState.mesh.rotation.z =
-				animationState.clock.getElapsedTime() / 3;
-			if (animationState.config.oscillate)
-				animationState.mesh.rotation.y =
-					animationState.config.amplitude *
-					Math.sin(animationState.clock.getElapsedTime() / 3);
-			render(animationState.effect);
-		} else {
-			render(animationState.effect);
+		// Create renderer
+		this.renderer = new WebGLRenderer({
+			powerPreference: 'high-performance',
+			alpha: true,
+			antialias: antialias,
+			stencil: false
+		});
+		this.renderer.setSize(this.canvas.width, this.canvas.height);
+
+		// Create scene and camera
+		this.scene = new Scene();
+		this.scene.background = new Color(this.config.backgroundColor);
+
+		// Add lights
+		this.light = new DirectionalLight("#fff", 6.5);
+		this.light.position.set(50, 50, 50);
+		this.scene.add(this.light);
+
+		// Set up resize listener
+		window.addEventListener('resize', this.onResize.bind(this));
+	}
+
+	loadModel() {
+		this.gltfLoader = new GLTFLoader();
+		this.gltfLoader.load(this.config.modelUrl, (res) => {
+			// Create mesh
+			this.scene?.add(res.scene);
+			this.mesh = res.scene.getObjectByName("Sketchfab_model");
+			if (!this.mesh) return;
+			this.mesh.castShadow = false;
+			this.mesh.receiveShadow = false;
+
+			this.container?.removeChild(this.container?.children[0]);
+
+			// Start animation once model is loaded
+			this.animate();
+		});
+	}
+
+	initAsciiEffect() {
+		this.controls = new OrbitControls(this.camera, this.renderer?.domElement);
+		this.controls.enableZoom = true;
+		this.controls.addEventListener("change", () => {
+			// This fires whenever any control change happens (pan, rotate, zoom)
+			const distance = this.camera.position.distanceTo(this.controls!.target);
+			
+			// Log both the distance and a normalized zoom factor
+			console.log({
+			distance: distance.toFixed(2),
+			zoomFactor: this.camera.zoom.toFixed(2),
+			position: this.camera.position
+			}); 
+		});
+		const asciiEffect = new ASCII({
+			fontSize: 35,
+			cellSize: 16,
+			invert: false,
+			color: this.config.color,
+			characters: this.config.charSet
+		});
+
+		this.composer = new EffectComposer(this.renderer);
+		this.composer.addPass(new RenderPass(this.scene, this.camera));
+		this.composer.addPass(new EffectPass(this.camera, asciiEffect));
+	}
+
+	animate() {
+		requestAnimationFrame(this.animate.bind(this));
+		if (this.mesh) {
+			this.mesh.rotation.z = this.clock.getElapsedTime() / 3;
 		}
+		this.composer?.render();
+	}
+
+	onResize() {
+		if (!this.container) return;
+
+		this.canvas = {
+			width: this.container.clientWidth,
+			height: this.container.clientHeight
+		};
+
+		this.camera.aspect = this.canvas.width / this.canvas.height;
+		this.camera.updateProjectionMatrix();
+
+		this.renderer?.setSize(this.canvas.width, this.canvas.height);
+		this.composer?.setSize(this.canvas.width, this.canvas.height);
 	}
 }
 
-export function adjustCameraZoom() {
-	if (
-		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-			navigator.userAgent,
-		)
-	) {
-		animationState.camera.zoom = 1;
-		animationState.camera.updateProjectionMatrix();
-		return true;
-	}
-	if (window.innerWidth < 500) {
-		animationState.camera.zoom = 1;
-		animationState.camera.updateProjectionMatrix();
-		return true;
-	}
-	if (window.innerWidth < 600) {
-		animationState.camera.zoom = 1;
-		animationState.camera.updateProjectionMatrix();
-		return true;
-	}
-	if (window.innerWidth < 800) {
-		animationState.camera.zoom = 1;
-		animationState.camera.updateProjectionMatrix();
-		return true;
-	}
-	if (window.innerWidth < 1500) {
-		animationState.camera.zoom = 1.2;
-		animationState.camera.updateProjectionMatrix();
-		return true;
-	}
-	animationState.camera.zoom = 1;
-	animationState.camera.updateProjectionMatrix();
-	return true;
-}
-
-export function onLoad(geometry: BufferGeometry) {
-	animationState.mesh.material = animationState.material;
-	animationState.mesh.geometry = geometry;
-
-	geometry.computeVertexNormals();
-
-	animationState.mesh.geometry.center();
-	animationState.mesh.rotation.x = (-90 * Math.PI) / 180;
-	animationState.mesh.geometry.computeBoundingBox();
-
-	const boundingBox = animationState.mesh.geometry.boundingBox;
-	if (boundingBox) {
-		animationState.mesh.position.y =
-			(boundingBox.max.z - boundingBox.min.z) / 5;
-		animationState.camera.position.x = boundingBox.max.x * 4;
-		animationState.camera.position.y = boundingBox.max.y;
-		animationState.camera.position.z = boundingBox.max.z * 3;
-		adjustCameraZoom();
-	}
-
-	animationState.scene.add(animationState.mesh);
-	animationState.controls = new OrbitControls(
-		animationState.camera,
-		animationState.domElement,
-	);
-	animationState.controls.enableZoom = true;
-
-	const animationContainer = document.getElementById("animation");
-	animationContainer?.removeChild(animationContainer?.children[0]);
-
-	tick();
-}
-
-export function onResize() {
-	if (!animationState.renderer)
-		throw new Error("WebGLRenderer not instantiated!");
-
-	const animationContainer = document.getElementById("animation");
-	if (!animationContainer) throw new Error("Animation Container not defined!");
-
-	const { clientWidth: width, clientHeight: height } = animationContainer;
-	animationState.camera.aspect = width / height;
-	if (!adjustCameraZoom()) {
-		animationState.camera.updateProjectionMatrix();
-	}
-
-	animationState.renderer.setSize(width, height);
-	animationState.effect?.setSize(width, height);
-}
-
-export function bootstrap() {
-	animationState.lights[0].position.set(100, 100, 400);
-	animationState.lights[1].position.set(-500, 100, -400);
-	animationState.scene.add(...animationState.lights);
-	animationState.scene.background = new Color(
-		animationState.config.backgroundColor,
-	);
-	animationState.effect = createEffect();
-	animationState.stlLoader.load(animationState.config.modelUrl, onLoad);
-	return animationState.effect.domElement;
-}
-
+// Initialize the application when window loads
 window.onload = () => {
-	animationState.domElement = bootstrap();
-	animationState.domElement.style.background = "transparent";
-	const animationContainer = document.getElementById("animation");
-	animationContainer?.appendChild(animationState.domElement);
+	new App();
 };
-
-window.onresize = onResize;
