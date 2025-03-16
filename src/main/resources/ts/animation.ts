@@ -80,7 +80,7 @@ export class App {
 
 		// Add lights
 		this.light = new DirectionalLight("#fff", 6.5);
-		this.light.position.set(50, 50, 50);
+		this.light.position.set(5, 5, 5);
 		this.scene.add(this.light);
 
 		// Set up resize listener
