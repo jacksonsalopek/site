@@ -8,5 +8,10 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "postprocessing": "^6.37.1",
+    "three": "^0.174.0"
   }
 }
